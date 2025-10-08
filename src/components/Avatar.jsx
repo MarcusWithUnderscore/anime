@@ -7,6 +7,12 @@ import * as THREE from "three"
 // Import expressions from JSON file
 import facialExpressions from '../../public/expressions.json'
 
+// ============================================
+// 🎛️ TOGGLE LEVA CONTROLS HERE
+// Set to false to disable all Leva controls
+// ============================================
+const USE_LEVA = false
+
 // Animation configuration
 const ANIMATIONS = {
   excited: "animations/Excited.fbx",
@@ -111,36 +117,8 @@ export function Avatar({ animation = "excited", facialExpression = "default", ..
     return applied
   }
 
-  // Animation frame
-  useFrame(() => {
-    if (morphTargetMeshes.current.length === 0) return
-
-    if (isSetupMode) {
-      // Manual control mode - apply manual controls
-      Object.keys(manualControls).forEach(key => {
-        applyMorphTarget(key, manualControls[key])
-      })
-    } else {
-      // Expression mode - reset all first, then apply expression
-      allMorphTargets.current.forEach(target => {
-        applyMorphTarget(target, 0)
-      })
-      
-      const expression = facialExpressions[currentExpression] || facialExpressions.default
-      Object.keys(expression).forEach(key => {
-        applyMorphTarget(key, expression[key])
-      })
-    }
-
-    // Blinking (always active unless in manual mode)
-    if (!isSetupMode) {
-      applyMorphTarget('eyeBlinkLeft', blink ? 1 : 0)
-      applyMorphTarget('eyeBlinkRight', blink ? 1 : 0)
-    }
-  })
-
-  // Manual controls - ALL 52 morph targets (must be declared BEFORE facial expression controls)
-  const manualControls = useControls("Manual Controls (Scroll to see all 52)", {
+  // Manual controls - ALL 52 morph targets (conditionally used)
+  const manualControlsConfig = {
     // Eyebrows
     browDownLeft: { value: 0, min: 0, max: 1, step: 0.01 },
     browDownRight: { value: 0, min: 0, max: 1, step: 0.01 },
@@ -218,10 +196,18 @@ export function Avatar({ animation = "excited", facialExpression = "default", ..
     
     // Tongue
     tongueOut: { value: 0, min: 0, max: 1, step: 0.01 },
-  })
+  }
 
-  // Leva controls
-  useControls("Facial Expression", {
+  // Conditionally use Leva controls
+  const manualControls = USE_LEVA 
+    ? useControls("Manual Controls (Scroll to see all 52)", manualControlsConfig)
+    : Object.keys(manualControlsConfig).reduce((acc, key) => {
+        acc[key] = 0
+        return acc
+      }, {})
+
+  // Facial expression controls
+  const facialControls = USE_LEVA ? useControls("Facial Expression", {
     expression: {
       value: currentExpression,
       options: Object.keys(facialExpressions),
@@ -317,6 +303,34 @@ export function Avatar({ animation = "excited", facialExpression = "default", ..
         console.log('  Current influences:', mesh.morphTargetInfluences)
       })
     }),
+  }) : null
+
+  // Animation frame
+  useFrame(() => {
+    if (morphTargetMeshes.current.length === 0) return
+
+    if (isSetupMode) {
+      // Manual control mode - apply manual controls
+      Object.keys(manualControls).forEach(key => {
+        applyMorphTarget(key, manualControls[key])
+      })
+    } else {
+      // Expression mode - reset all first, then apply expression
+      allMorphTargets.current.forEach(target => {
+        applyMorphTarget(target, 0)
+      })
+      
+      const expression = facialExpressions[currentExpression] || facialExpressions.default
+      Object.keys(expression).forEach(key => {
+        applyMorphTarget(key, expression[key])
+      })
+    }
+
+    // Blinking (always active unless in manual mode)
+    if (!isSetupMode) {
+      applyMorphTarget('eyeBlinkLeft', blink ? 1 : 0)
+      applyMorphTarget('eyeBlinkRight', blink ? 1 : 0)
+    }
   })
 
   // Auto-blink
@@ -349,6 +363,7 @@ export function Avatar({ animation = "excited", facialExpression = "default", ..
         1
       }
     >
+      
       <group ref={group} {...props} dispose={null}>
         <primitive object={nodes.Hips} />
         <skinnedMesh geometry={nodes.Wolf3D_Hair.geometry} material={materials.Wolf3D_Hair} skeleton={nodes.Wolf3D_Hair.skeleton} />
