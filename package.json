@@ -17,7 +17,7 @@
     "lucide-react": "^0.545.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "three": "^0.180.0"
+    "three": "0.169.0"
   },
   "devDependencies": {
     "@types/react": "^19.0.10",
@@ -25,6 +25,9 @@
     "@vitejs/plugin-react": "^4.3.4",
     "globals": "^15.15.0",
     "vite": "^6.2.0"
+  },
+  "resolutions": {
+    "three": "0.169.0"
   },
   "main": "index.js",
   "repository": "https://github.com/MarcusWithUnderscore/anime.git",
