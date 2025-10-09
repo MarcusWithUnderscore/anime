@@ -14,23 +14,28 @@ function DynamicCameraController({ isPlaying, zoomLevel, globalSpeed = 1.5 }) {
 
   // Camera path points - add pause (in seconds) to pause at that point
   const pathPoints = [
+    /*{ pos: [0, 0.3, 15], look: [0, 0.1, 0.3] },
+    { pos: [0, 0.3, 14], look: [0, 0.1, 0.3] },
+    { pos: [0, 0.3, 13], look: [0, 0.1, 0.3] },
+    { pos: [0, 0.3, 12], look: [0, 0.1, 0.3] },
     { pos: [0, 0.3, 11], look: [0, 0.1, 0.3] },
     { pos: [0, 0.3, 10], look: [0, 0.1, 0.3] },
     { pos: [0, 0.3, 9], look: [0, 0.1, 0.3] },
     { pos: [0, 0.3, 8], look: [0, 0.1, 0.3] },
-    { pos: [0, 0.3, 7], look: [0, 0.1, 0.3] },
-    { pos: [0, 0.3, 6], look: [0, 0.1, 0.3] },
-    { pos: [0, 0.3, 5], look: [0, 0.1, 0.3] },
-    { pos: [0, 0.3, 4], look: [0, 0.1, 0.3] },
-    { pos: [0, 0.3, 3], look: [0, 0.1, 0.3], pause: 2 }, // Pause 2 seconds here
-    { pos: [0, 0.3, 3], look: [0, 0.3, 0.3] },
-    { pos: [0, 0.5, 2], look: [0, 0.5, 0.3] },
-    { pos: [0, 0.7, 2], look: [0, 0.7, 0.3] },
-    { pos: [0, 0.9, 2], look: [0, 0.9, 0.3] },
+    { pos: [0, 0.3, 7], look: [0, 0.1, 0.3] }, // Pause 2 seconds here
+    { pos: [0, 0.3, 6], look: [0, 0.3, 0.3] },
+    { pos: [0, 0.9, 5], look: [0, 0.9, 0.3] },
     { pos: [0, 1.1, 2], look: [0, 1.1, 0.3] },
-    { pos: [0, 1.2, 2], look: [0, 1.2, 0.3], pause: 1.5 }, // Pause 1.5 seconds here
-    { pos: [-0.1, 1.5, 3], look: [0, 1.4, 0.3] },
-    { pos: [-0.3, 1.7, 3], look: [0, 1.5, 0.3],pause: 30 },
+    { pos: [0, 1.1, 2], look: [0, 1.1, 0.3] },
+    { pos: [0, 8, 5,], look: [0, 1.1, 0.3] },
+    { pos: [0, 8, 2], look: [0, 1.1, 0.3] },
+     { pos: [0, 5, 14], look: [0, 1.1, 0.3] },
+     { pos: [0, 2, 2], look: [0,0, 0.3] },
+     { pos: [0, 2.5 , 1.5], look: [0, 1.5, 0.3], pause: 60 },*/
+      { pos: [0, 2.5 , 1.5], look: [0, 1.5, 0.3], pause: 60 },
+       { pos: [0, 2.5 , 1.5], look: [0, 1.5, 0.3], pause: 60 },
+          
+   
   ];
 
   // Create THREE.js curve from path points
@@ -226,7 +231,9 @@ export const Experience = () => {
         <Avatar animation={currentAnimation} />
       </group>
       
-      <Microphone position={[0, 0.1, 0.5]} />
+      <Microphone position={[0, 0.1, 0.5]} micType="studio" />
+      {/* For handheld mic during performance, change to: */}
+      {/* <Microphone position={[0, 0.1, 0.5]} micType="handheld" /> */}
       
       {/* Stage backdrop with texture */}
       <mesh position={[0, 3, -2.8]} receiveShadow>
@@ -308,34 +315,105 @@ export const Experience = () => {
 const ConcertRoom = () => {
   return (
     <group>
+      {/* Larger floor */}
       <mesh position={[0, -0.1, 0]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[20, 20]} />
+        <planeGeometry args={[50, 50]} />
         <meshStandardMaterial color="#0a0a0a" />
       </mesh>
       
-      <mesh position={[0, 3, -5]} receiveShadow>
-        <planeGeometry args={[20, 6]} />
-        <meshStandardMaterial color="#1a1a1a" side={THREE.DoubleSide} />
+      {/* Back wall - extended */}
+      <mesh position={[0, 5, -10]} receiveShadow>
+        <planeGeometry args={[50, 12]} />
+        <meshStandardMaterial color="#0a0a0a" side={THREE.DoubleSide} />
       </mesh>
       
-      <mesh position={[-10, 3, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
-        <planeGeometry args={[20, 6]} />
-        <meshStandardMaterial color="#1a1a1a" side={THREE.DoubleSide} />
-      </mesh>
-      <mesh position={[10, 3, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow>
-        <planeGeometry args={[20, 6]} />
-        <meshStandardMaterial color="#1a1a1a" side={THREE.DoubleSide} />
+      {/* Left wall - extended */}
+      <mesh position={[-25, 5, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
+        <planeGeometry args={[50, 12]} />
+        <meshStandardMaterial color="#0a0a0a" side={THREE.DoubleSide} />
       </mesh>
       
-      <mesh position={[0, 6, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[20, 20]} />
-        <meshStandardMaterial color="#0a0a0a" />
+      {/* Right wall - extended */}
+      <mesh position={[25, 5, 0]} rotation={[0, -Math.PI / 2, 0]} receiveShadow>
+        <planeGeometry args={[50, 12]} />
+        <meshStandardMaterial color="#0a0a0a" side={THREE.DoubleSide} />
+      </mesh>
+      
+      {/* Ceiling - extended */}
+      <mesh position={[0, 10, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[50, 50]} />
+        <meshStandardMaterial color="#050505" />
+      </mesh>
+      
+      {/* Front wall (behind audience) */}
+      <mesh position={[0, 5, 15]} receiveShadow>
+        <planeGeometry args={[50, 12]} />
+        <meshStandardMaterial color="#0a0a0a" side={THREE.DoubleSide} />
       </mesh>
     </group>
   );
 };
 
-const Microphone = ({ position = [0, 0, 0] }) => {
+const Microphone = ({ position = [0, 0, 0], micType = "studio" }) => {
+  if (micType === "handheld") {
+    // Portable handheld concert microphone
+    return (
+      <group position={[...position, position[1] + 1.4, position[2] + 0.2]} rotation={[Math.PI / 6, 0, 0]}>
+        {/* Mic body */}
+        <mesh>
+          <cylinderGeometry args={[0.022, 0.025, 0.18, 16]} />
+          <meshStandardMaterial 
+            color="#1a1a1a" 
+            metalness={0.9} 
+            roughness={0.2}
+          />
+        </mesh>
+        
+        {/* Grille head */}
+        <mesh position={[0, 0.1, 0]}>
+          <sphereGeometry args={[0.035, 16, 16]} />
+          <meshStandardMaterial 
+            color="#2a2a2a" 
+            metalness={0.7} 
+            roughness={0.5}
+          />
+        </mesh>
+        
+        {/* Grille mesh pattern */}
+        <mesh position={[0, 0.1, 0]}>
+          <sphereGeometry args={[0.036, 12, 12]} />
+          <meshStandardMaterial 
+            color="#3a3a3a" 
+            metalness={0.6} 
+            roughness={0.6}
+            wireframe={true}
+          />
+        </mesh>
+        
+        {/* Handle grip texture */}
+        <mesh position={[0, -0.05, 0]}>
+          <cylinderGeometry args={[0.023, 0.023, 0.08, 16]} />
+          <meshStandardMaterial 
+            color="#0a0a0a" 
+            metalness={0.3} 
+            roughness={0.8}
+          />
+        </mesh>
+        
+        {/* XLR connector */}
+        <mesh position={[0, -0.11, 0]}>
+          <cylinderGeometry args={[0.018, 0.022, 0.03, 16]} />
+          <meshStandardMaterial 
+            color="#2a2a2a"
+            metalness={0.8}
+            roughness={0.3}
+          />
+        </mesh>
+      </group>
+    );
+  }
+  
+  // Studio condenser microphone (default)
   return (
     <group position={position}>
       {/* Base */}
