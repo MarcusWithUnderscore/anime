@@ -14,7 +14,11 @@ function DynamicCameraController({ isPlaying, zoomLevel, globalSpeed = 1.5 }) {
 
   // Camera path points - add pause (in seconds) to pause at that point
   const pathPoints = [
-    /*{ pos: [0, 0.3, 15], look: [0, 0.1, 0.3] },
+     { pos: [0, 0.1 , 1], look: [0, 0.1, 0.3] },
+     { pos: [0, 1, 2], look: [0, 1, 0.3] },
+     { pos: [0, 1.3, 5], look: [0, 1.3, 0.3] },
+     
+    { pos: [0, 0.3, 15], look: [0, 0.1, 0.3] },
     { pos: [0, 0.3, 14], look: [0, 0.1, 0.3] },
     { pos: [0, 0.3, 13], look: [0, 0.1, 0.3] },
     { pos: [0, 0.3, 12], look: [0, 0.1, 0.3] },
@@ -27,15 +31,13 @@ function DynamicCameraController({ isPlaying, zoomLevel, globalSpeed = 1.5 }) {
     { pos: [0, 0.9, 5], look: [0, 0.9, 0.3] },
     { pos: [0, 1.1, 2], look: [0, 1.1, 0.3] },
     { pos: [0, 1.1, 2], look: [0, 1.1, 0.3] },
-    { pos: [0, 8, 5,], look: [0, 1.1, 0.3] },
-    { pos: [0, 8, 2], look: [0, 1.1, 0.3] },
+    { pos: [0, 5, 5,], look: [0, 1.1, 0.3] },
+    { pos: [0, 5, 2], look: [0, 1.1, 0.3] },
      { pos: [0, 5, 14], look: [0, 1.1, 0.3] },
      { pos: [0, 2, 2], look: [0,0, 0.3] },
-     { pos: [0, 2.5 , 1.5], look: [0, 1.5, 0.3], pause: 60 },*/
-      { pos: [0, 2.5 , 1.5], look: [0, 1.5, 0.3], pause: 60 },
-       { pos: [0, 2.5 , 1.5], look: [0, 1.5, 0.3], pause: 60 },
-          
-   
+     { pos: [0, 2.5 , 1.5], look: [0, 1.5, 0.3]},
+      { pos: [0, 5 , 10], look: [0, 1.5, 0.3] },
+     
   ];
 
   // Create THREE.js curve from path points
